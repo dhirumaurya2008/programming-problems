@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int omaxi = INT_MAX;
+    int DFS(int r, int c, vector<vector<int>>& heights, int maxi, vector<vector<bool>> &visited) {
+    
+        int dr[4] = {1,-1,0,0};
+        int dc[4] = {0,0,-1,1};
+        int nr, nc;
+        if ((r == heights.size()-1) && (c == heights[0].size()-1)) {
+                omaxi = min(maxi, omaxi);
+               return maxi; 
+            }
+        visited[r][c] = true;
+        int minEffort = INT_MAX;
+        
+        for (int i = 0; i<4; i++){
+            nr = r + dr[i];
+            nc = c + dc[i];
+            if (nr<0 || nc<0 || (nr>=heights.size()) || (nc>=heights[0].size()) || visited[nr][nc] == true)
+                 continue;
+            int currentDifference =
+                    abs(heights[nr][nc] - heights[r][c]);
+            int maxCurrentDifference =
+                    max(maxi, currentDifference);
+            
+            if (maxCurrentDifference < omaxi) {
+                int result = DFS(nr, nc, heights, maxCurrentDifference, visited);    
+            minEffort = min(result, minEffort);
+            }
+        } 
+        
+        visited[r][c] = false;
+        return minEffort;
+    }
+    
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        vector<vector<bool>> visited(heights.size(), vector<bool>(heights[0].size(), false));
+        int maxi = 0;
+        return DFS(0, 0, heights, maxi, visited);
+    }
+};

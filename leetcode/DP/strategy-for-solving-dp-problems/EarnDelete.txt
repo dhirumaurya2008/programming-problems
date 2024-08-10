@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int deleteAndEarnWrapper(int num, vector<int>& nums, map<int, int> &mp, map<int, int> &dp) {
+        
+        /*Base cases 1st*/
+        if (num == 0)
+            return 0;
+        
+        /*Base cases 2nd*/
+        if (num == 1)
+        {
+            if (mp.find(num) == mp.end())
+                return 0;
+            else 
+                return mp[1];
+        }
+        
+        /*Already calculated*/
+        if (dp.find(num) != dp.end())
+            return dp[num];
+        
+        int gain = 0;
+        /*current number not exist in nums array*/
+        if (mp.find(num) != mp.end())
+        {
+            gain = mp[num];
+        }
+        
+        /*If number exist then add gain and leave the next number, if number not exist or we are not taking the current number*/
+        return (dp[num] = max(deleteAndEarnWrapper(num-2, nums, mp, dp)+gain, deleteAndEarnWrapper(num-1,nums, mp, dp)));
+    }
+    
+    int deleteAndEarn(vector<int>& nums) {
+        map<int, int> mp;
+        map<int, int> dp;
+        int maxi = 0;
+        for (auto it: nums)
+        {
+            mp[it] += it;
+            maxi =  max(maxi, it);
+        }
+        return deleteAndEarnWrapper(maxi, nums, mp, dp);
+    }
+};

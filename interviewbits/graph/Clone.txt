@@ -1,0 +1,51 @@
+int Solution::solve(string A, string B, vector<string> &C) {
+    /*to make list of words unique*/
+    set<string> st;
+
+    /*Check if word present with bool*/
+    bool isWordExist = false;
+
+    /*put int the set*/
+    for (auto it : C) {
+        st.insert(it);
+        if (it.compare(B) == 0) {
+            isWordExist = true;
+        }
+    }
+
+    if (isWordExist == false)
+        return 0;
+
+    queue<string> q;
+    q.push(A);
+    int curLevel = 0;
+    int nLevelNodes = 0;
+    while (!q.empty()) {
+        curLevel++;
+        nLevelNodes = q.size();    
+        while (nLevelNodes--) {
+            string temp = q.front();
+            q.pop();
+            for (int i = 0; i<temp.size(); i++) {
+                string temp_2 = temp;
+                for (char ch ='a'; ch <= 'z'; ch++)
+                {
+                    temp_2[i] = ch;
+                    if (temp_2.compare(temp) == 0)
+                        continue;
+                    if (temp_2.compare(B) == 0)
+                            return (curLevel + 1);
+
+                    if (st.find(temp_2) != st.end()) {
+                        q.push(temp_2);
+                        st.erase(temp);
+                    }
+                }
+            }
+        }
+
+    }
+
+    return 0;
+    
+}

@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int WrapperminCostClimbingStairs(int index, vector<int>& cost, vector<int> &dp) {
+        if (index >= cost.size())
+            return 0;
+        if (dp[index] != -1)
+            return dp[index];
+        int step1 = 0;
+        int step2 = 0;
+        step1 = cost[index] + WrapperminCostClimbingStairs(index+1, cost, dp);
+        step2 = cost[index] + WrapperminCostClimbingStairs(index+2, cost, dp);
+        return dp[index] = min(step1, step2);
+    }
+    int minCostClimbingStairs(vector<int>& cost) {
+        vector<int> dp(cost.size(), -1);
+        return min(WrapperminCostClimbingStairs(0, cost, dp), WrapperminCostClimbingStairs(1, cost, dp));
+    }
+};
+
+int WrapperminCostClimbingStairs(int index, vector<int>& cost, vector<int> &dp) {
+        if (index <= 1)
+            return 0;
+        if (dp[index] != -1)
+            return dp[index];
+        int step1 = 0;
+        int step2 = 0;
+        step1 = cost[index-1] + WrapperminCostClimbingStairs(index-1, cost, dp);
+        step2 = cost[index-2] + WrapperminCostClimbingStairs(index-2, cost, dp);
+        return dp[index] = min(step1, step2);
+    }
+    int minCostClimbingStairs(vector<int>& cost) {
+        vector<int> dp(cost.size()+1, -1);
+        WrapperminCostClimbingStairs(cost.size(), cost, dp);
+        return dp[cost.size()];
+    }

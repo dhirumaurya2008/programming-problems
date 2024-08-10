@@ -1,0 +1,22 @@
+class Solution {
+public:
+     int longestCommonSubsequenceWrapper(string text1, int m,  string text2, int n, vector<vector<int>> & dp) {
+        
+         if (m==0 || n==0)
+             return 0;
+         
+         if (dp[m][n] != -1)
+             return dp[m][n];
+         
+         if (text1[m-1] == text2[n-1])
+         {
+            return dp[m][n] = (1 +  longestCommonSubsequenceWrapper(text1, m-1, text2, n-1, dp));
+         }
+         return dp[m][n] = max (longestCommonSubsequenceWrapper(text1, m-1, text2, n, dp), longestCommonSubsequenceWrapper(text1, m, text2, n-1, dp));
+    }
+    
+    int longestCommonSubsequence(string text1, string text2) {
+        vector<vector<int>> dp(text1.size()+1, vector<int>(text2.size()+1, -1));
+        return longestCommonSubsequenceWrapper(text1, text1.size(), text2, text2.size(), dp);
+    }
+};
